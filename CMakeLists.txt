@@ -14,6 +14,8 @@ else()
 set(COMMON_LIBS sb6 glfw GL rt dl)
 endif()
 
+add_definitions(-DIN_SB6_LIB)
+
 add_library(sb6
 src/sb6/sb6.cpp
 src/sb6/sb6ktx.cpp
@@ -111,9 +113,10 @@ endif()
 
 foreach(EXAMPLE ${EXAMPLES})
   add_executable(${EXAMPLE} WIN32 src/${EXAMPLE}/${EXAMPLE}.cpp)
+  add_dependencies(${EXAMPLE} sb6)
   target_link_libraries(${EXAMPLE} ${COMMON_LIBS})
   if(MSVC)
-configure_file(${PROJECT_SOURCE_DIR}/build/vs2010/VisualStudioUserFile.vcproj.user.in ${CMAKE_CURRENT_BINARY_DIR}/${EXAMPLE}.vcproj.user @ONLY)
+    configure_file(${PROJECT_SOURCE_DIR}/build/vs2010/VisualStudioUserFile.vcproj.user.in ${CMAKE_CURRENT_BINARY_DIR}/${EXAMPLE}.vcproj.user @ONLY)
     configure_file(${PROJECT_SOURCE_DIR}/build/vs2010/VisualStudioUserFile.vcxproj.user.in ${CMAKE_CURRENT_BINARY_DIR}/${EXAMPLE}.vcxproj.user @ONLY)
   endif(MSVC)
 endforeach(EXAMPLE)
